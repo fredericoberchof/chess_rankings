@@ -64,10 +64,6 @@ This project uses the following Lichess API endpoints:
 - `GET /api/player/top/{limit}/classical` - Get top classical players
 - `GET /api/user/{username}/rating-history` - Get player's rating history
 
-All endpoints are public and require no authentication.
-
-```
-
 ## Dependencies
 
 - `requests`: HTTP library for API calls
@@ -81,3 +77,4 @@ The application includes comprehensive error handling for:
 - API rate limiting
 - Missing player data
 - Invalid responses
+
