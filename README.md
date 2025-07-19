@@ -13,7 +13,7 @@ A Python application that fetches and analyzes classical chess player rankings a
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/fredericoberchof/chess_rankings.git
 cd chess_rankings
 ```
 
@@ -66,15 +66,6 @@ This project uses the following Lichess API endpoints:
 
 All endpoints are public and require no authentication.
 
-## Project Structure
-
-```
-chess_rankings/
-├── main.py              # Main application script
-├── requirements.txt     # Python dependencies
-├── README.md           # This file
-├── ratings.csv         # Generated output file
-└── venv/               # Virtual environment
 ```
 
 ## Dependencies
@@ -90,20 +81,3 @@ The application includes comprehensive error handling for:
 - API rate limiting
 - Missing player data
 - Invalid responses
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Acknowledgments
-
-- [Lichess](https://lichess.org/) for providing the chess API
-- The chess community for inspiration and feedback 
