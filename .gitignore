@@ -1,0 +1,9 @@
+# Python
+venv/
+env/
+
+# OS
+.DS_Store
+
+# Project specific
+ratings.csv
