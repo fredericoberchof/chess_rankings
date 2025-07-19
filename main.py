@@ -5,16 +5,16 @@ from datetime import datetime, timedelta
 BASE_URL = "https://lichess.org/api"
 
 # Part 1 - Fetch top classical players
-def get_top_classical_players(limit=50):
+def print_top_50_classical_players():
     try:
-        response = requests.get(f"{BASE_URL}/player/top/{limit}/classical")
+        response = requests.get(f"{BASE_URL}/player/top/50/classical")
         response.raise_for_status()
         data = response.json()
-        usernames = [player["username"] for player in data["users"][:limit]]
-
-        # print("[Part 1] Top Classical Players:")
-        # print(usernames)
-
+        usernames = [player["username"] for player in data["users"][:50]]
+        
+        print("[Part 1] Top 50 Classical Players:")
+        for username in usernames:
+            print(username)
         return usernames
     except requests.exceptions.RequestException as e:
         print("Error fetching top players:", e)
@@ -35,20 +35,35 @@ def get_player_classical_rating_history(username):
         rating_by_date = {}
 
         for entry in history:
-            year = entry[0]
-            month = entry[1] + 1
-            day = entry[2]
-            rating = entry[3]
-            date = datetime(year, month, day).date().isoformat()
+            year, month, day, rating = entry[:4]
+            date = datetime(year, month + 1, day).date().isoformat()
             rating_by_date[date] = rating
-
-        # print(f"[Part 2] Rating history for {username}:")
-        # print(rating_by_date)
 
         return rating_by_date
     except requests.exceptions.RequestException as e:
         print(f"Error fetching rating history for {username}:", e)
         return {}
+
+def print_last_30_day_rating_for_top_player():
+    players = print_top_50_classical_players()
+    if not players:
+        return
+
+    top_username = players[0]
+    full_history = get_player_classical_rating_history(top_username)
+
+    last_30_days = [(datetime.today().date() - timedelta(days=i)).isoformat() for i in reversed(range(30))]
+    rating_by_day = {}
+    last_known_rating = "N/A"
+
+    for date in last_30_days:
+        if date in full_history:
+            last_known_rating = full_history[date]
+        rating_by_day[date] = last_known_rating
+
+    print(f"\n[Part 2] Last 30 days of ratings for {top_username}:")
+    for date, rating in rating_by_day.items():
+        print(f"{date}: {rating}")
 
 # Part 3 - Save to CSV (last 30 days)
 def get_last_30_days():
@@ -56,7 +71,7 @@ def get_last_30_days():
     return [(today - timedelta(days=i)).isoformat() for i in reversed(range(30))]
 
 def save_ratings_to_csv(usernames):
-    print("Fetching and writing player ratings to CSV...")
+    print("\n[Part 3] Saving all player ratings to ratings.csv...")
     with open("ratings.csv", "w", newline="") as csvfile:
         fieldnames = ["username"] + get_last_30_days()
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -73,24 +88,24 @@ def save_ratings_to_csv(usernames):
                     last_known_rating = history[date]
                 row[date] = last_known_rating
 
-            # print(f"[Part 3] {username} row:", row)
-
             writer.writerow(row)
 
     print("Ratings successfully saved to ratings.csv")
 
 # Main
 def main():
-    print("Starting Lichess rating fetcher...")
+    print("Starting Lichess Rating Fetcher...\n")
 
     # Part 1
-    top_players = get_top_classical_players()
-    if not top_players:
-        print("No players found.")
-        return
+    print_top_50_classical_players()
 
-    # Part 2 & 3
-    save_ratings_to_csv(top_players)
+    # Part 2
+    print_last_30_day_rating_for_top_player()
+
+    # Part 3
+    top_players = print_top_50_classical_players()
+    if top_players:
+        save_ratings_to_csv(top_players)
 
 if __name__ == "__main__":
     main()

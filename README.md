@@ -7,7 +7,6 @@ A Python application that fetches and analyzes classical chess player rankings a
 - **Top Players Fetching**: Retrieves the top 50 classical chess players from Lichess
 - **Rating History Analysis**: Gets detailed rating history for individual players
 - **CSV Export**: Generates a comprehensive CSV file with 30-day rating history for all top players
-- **No Authentication Required**: Uses Lichess public APIs
 
 ## Installation
 
