@@ -77,3 +77,7 @@ The application includes comprehensive error handling for:
 - Missing player data
 - Invalid responses
 
+## Author
+
+Developed by [Frederico Berchof](https://github.com/fredericoberchof/chess_rankings)
+
